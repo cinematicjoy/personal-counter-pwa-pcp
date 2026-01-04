@@ -136,6 +136,32 @@
     </form>
   </dialog>
 
+  <!-- Dialog: historial -->
+<dialog id="historyDialog" class="dlg">
+  <form method="dialog" class="dlgForm">
+    <div class="dlgTitle">Historial</div>
+    <div id="historyHint" class="dlgHint"></div>
+
+    <div class="histWrap">
+      <table class="histTable">
+        <thead>
+          <tr>
+            <th>Día</th>
+            <th>Cambio</th>
+            <th>Última vez</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+
+    <div class="dlgActions">
+      <button value="ok" class="btn ghost">Cerrar</button>
+    </div>
+  </form>
+</dialog>
+
+
   <script src="./app.js"></script>
 
   <script>
