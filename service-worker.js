@@ -28,12 +28,10 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
-  // Cache-first
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;
       return fetch(req).then((res) => {
-        // cachea solo GET y respuestas válidas
         if (req.method === "GET" && res && res.status === 200) {
           const resClone = res.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(req, resClone));

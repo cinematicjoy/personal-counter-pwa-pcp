@@ -6,7 +6,6 @@ const elEmpty = document.getElementById("emptyState");
 const addCategoryBtn = document.getElementById("addCategoryBtn");
 const backupBtn = document.getElementById("backupBtn");
 
-// Dialogs
 const categoryDialog = document.getElementById("categoryDialog");
 const categoryForm = document.getElementById("categoryForm");
 const categoryNameInput = document.getElementById("categoryName");
@@ -40,14 +39,12 @@ let pendingSubForCategoryId = null;
 let pendingEdit = null;     // { kind: "cat"|"sub", catId, subId? }
 let pendingConfirm = null;  // fn
 
-// Drag state
 let draggingCatId = null;
 
 function uid() {
   return `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
-/** redondea a múltiplos de 0.5 y evita floats raros */
 function quantizeHalf(n) {
   return Math.round(n * 2) / 2;
 }
@@ -57,7 +54,6 @@ function clampMinZero(n) {
 }
 
 function fmtCount(n) {
-  // muestra "1" o "1.5"
   const q = quantizeHalf(n);
   return Number.isInteger(q) ? String(q) : q.toFixed(1);
 }
@@ -70,7 +66,6 @@ function loadState() {
     const parsed = JSON.parse(raw);
     if (!parsed || !Array.isArray(parsed.categories)) return { categories: [] };
 
-    // Normaliza
     parsed.categories.forEach(c => {
       if (typeof c.count !== "number") c.count = 0;
       if (!Array.isArray(c.subs)) c.subs = [];
@@ -215,14 +210,12 @@ function importPayload(jsonText) {
     throw new Error("JSON inválido (no se puede parsear).");
   }
 
-  // Soporta dos formatos: {version, data} o directamente {categories:...}
   const maybeData = (obj && obj.data && obj.data.categories) ? obj.data : obj;
 
   if (!maybeData || !Array.isArray(maybeData.categories)) {
     throw new Error("Formato inválido: falta 'categories'.");
   }
 
-  // Normaliza y valida
   const normalized = { categories: [] };
 
   for (const c of maybeData.categories) {
@@ -246,7 +239,6 @@ function importPayload(jsonText) {
       }
     }
 
-    // clampa no-negativo
     cat.count = clampMinZero(cat.count);
     cat.subs.forEach(s => s.count = clampMinZero(s.count));
 
@@ -270,7 +262,6 @@ function downloadJson(filename, content) {
   URL.revokeObjectURL(url);
 }
 
-// ---------- Render ----------
 function render() {
   elList.innerHTML = "";
 
@@ -318,7 +309,6 @@ function render() {
       draggingCatId = null;
     });
 
-    // Top row
     const row = document.createElement("div");
     row.className = "row";
 
@@ -346,7 +336,6 @@ function render() {
     drag.textContent = "≡";
     drag.title = "Arrastrá para reordenar";
     drag.type = "button";
-    // (el drag real lo maneja el card, esto es solo visual)
 
     const up = document.createElement("button");
     up.className = "smallbtn";
@@ -397,7 +386,6 @@ function render() {
 
     card.appendChild(row);
 
-    // Step bar (categoria)
     const stepBar = document.createElement("div");
     stepBar.className = "stepBar";
     stepBar.innerHTML = `
@@ -407,7 +395,6 @@ function render() {
     `;
     card.appendChild(stepBar);
 
-    // Subcategorías
     if (cat.subs && cat.subs.length > 0) {
       const subs = document.createElement("div");
       subs.className = "subs";
@@ -482,7 +469,6 @@ function render() {
   }
 }
 
-// ---------- UI events ----------
 addCategoryBtn.addEventListener("click", () => {
   categoryNameInput.value = "";
   categoryDialog.showModal();
@@ -526,7 +512,6 @@ confirmOk.addEventListener("click", () => {
   pendingConfirm = null;
 });
 
-// Backup dialog
 backupBtn.addEventListener("click", () => {
   refreshExportArea();
   importArea.value = "";
@@ -539,7 +524,6 @@ copyExportBtn.addEventListener("click", async () => {
     copyExportBtn.textContent = "Copiado ✓";
     setTimeout(() => (copyExportBtn.textContent = "Copiar"), 900);
   } catch {
-    // fallback
     exportArea.select();
     document.execCommand("copy");
   }
@@ -591,7 +575,6 @@ resetBtn.addEventListener("click", () => {
   });
 });
 
-// Delegación clicks lista
 elList.addEventListener("click", (e) => {
   const target = e.target.closest("[data-action]");
   if (!target) return;
@@ -654,5 +637,4 @@ elList.addEventListener("click", (e) => {
   }
 });
 
-// Primera render
 render();
