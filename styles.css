@@ -322,3 +322,77 @@ main{ padding: 14px; }
 .rowBtns{ display:flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
 .fileBtn{ display:inline-flex; align-items:center; gap:10px; }
 .backupDanger{ margin-top: 12px; }
+
+/* Bloques de archivados */
+.sectionHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 8px 2px;
+  max-width: 720px;
+  margin: 0 auto 6px;
+}
+.sectionTitle{
+  font-weight: 950;
+  font-size: 13px;
+  color: rgba(229,231,235,.9);
+  letter-spacing: .2px;
+}
+.sectionBtn{
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 10px;
+  cursor:pointer;
+  font-weight: 850;
+  font-size: 12px;
+}
+.sectionBtn:active{ transform: scale(.99); }
+
+.metaLine{
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Estado bloqueado (categoría derivada por subs) */
+.tapArea.locked{
+  cursor: default;
+  opacity: .88;
+}
+.lockHint{
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* Historial */
+.histWrap{
+  border:1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,.02);
+}
+.histTable{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.histTable th, .histTable td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  text-align: left;
+  vertical-align: top;
+}
+.histTable th{
+  color: rgba(229,231,235,.9);
+  font-weight: 950;
+  background: rgba(0,0,0,.14);
+}
+.histTable td{
+  color: rgba(229,231,235,.9);
+}
+.badgePos{ color: #b7f7c9; font-weight: 900; }
+.badgeNeg{ color: #ffb4b4; font-weight: 900; }
