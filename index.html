@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111827" />
+  <title>Counters (PWA)</title>
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="title">
+      <div class="appname">Counters</div>
+      <div class="subtitle">Tap = +1 · Botones = ±0,5 / -1 · Backup JSON</div>
+    </div>
+
+    <div class="topActions">
+      <button id="backupBtn" class="iconbtn small" aria-label="Backup" title="Backup">⤓</button>
+      <button id="addCategoryBtn" class="iconbtn" aria-label="Agregar categoría" title="Agregar categoría">＋</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="emptyState" class="empty hidden">
+      <div class="emptyCard">
+        <div class="emptyTitle">No hay categorías aún</div>
+        <div class="emptyText">Tocá <b>＋</b> para crear “Gym”, “Monster”, etc.</div>
+      </div>
+    </section>
+
+    <section id="list" class="list"></section>
+  </main>
+
+  <!-- Dialog: nueva categoría -->
+  <dialog id="categoryDialog" class="dlg">
+    <form method="dialog" id="categoryForm" class="dlgForm">
+      <div class="dlgTitle">Nueva categoría</div>
+      <label class="field">
+        <span>Nombre</span>
+        <input id="categoryName" type="text" autocomplete="off" placeholder="Ej: Gym, Monster..." required />
+      </label>
+
+      <div class="dlgActions">
+        <button value="cancel" class="btn ghost">Cancelar</button>
+        <button value="ok" class="btn primary">Crear</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Dialog: nueva subcategoría -->
+  <dialog id="subDialog" class="dlg">
+    <form method="dialog" id="subForm" class="dlgForm">
+      <div class="dlgTitle">Nueva subcategoría</div>
+      <div id="subFor" class="dlgHint"></div>
+
+      <label class="field">
+        <span>Nombre</span>
+        <input id="subName" type="text" autocomplete="off" placeholder="Ej: Mango, Ananá..." required />
+      </label>
+
+      <div class="dlgActions">
+        <button value="cancel" class="btn ghost">Cancelar</button>
+        <button value="ok" class="btn primary">Crear</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Dialog: editar nombre -->
+  <dialog id="editDialog" class="dlg">
+    <form method="dialog" id="editForm" class="dlgForm">
+      <div class="dlgTitle">Editar nombre</div>
+      <div id="editHint" class="dlgHint"></div>
+
+      <label class="field">
+        <span>Nuevo nombre</span>
+        <input id="editName" type="text" autocomplete="off" required />
+      </label>
+
+      <div class="dlgActions">
+        <button value="cancel" class="btn ghost">Cancelar</button>
+        <button value="ok" class="btn primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Dialog: backup -->
+  <dialog id="backupDialog" class="dlg">
+    <form method="dialog" class="dlgForm" id="backupForm">
+      <div class="dlgTitle">Backup JSON</div>
+      <div class="dlgHint">Exportá para guardar / Importá para restaurar.</div>
+
+      <div class="backupGrid">
+        <div class="backupCol">
+          <div class="backupLabel">Export (copiar/descargar)</div>
+          <textarea id="exportArea" class="ta" readonly></textarea>
+
+          <div class="rowBtns">
+            <button type="button" id="copyExportBtn" class="btn">Copiar</button>
+            <button type="button" id="downloadExportBtn" class="btn">Descargar .json</button>
+          </div>
+        </div>
+
+        <div class="backupCol">
+          <div class="backupLabel">Import (pegar o subir archivo)</div>
+          <textarea id="importArea" class="ta" placeholder="Pegá acá el JSON exportado..."></textarea>
+
+          <div class="rowBtns">
+            <button type="button" id="importPasteBtn" class="btn primary">Importar pegado</button>
+            <label class="btn fileBtn">
+              Importar archivo
+              <input id="importFile" type="file" accept="application/json" hidden />
+            </label>
+          </div>
+
+          <div class="backupDanger">
+            <button type="button" id="resetBtn" class="btn danger">Resetear todo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dlgActions">
+        <button value="ok" class="btn ghost">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Dialog: confirmación -->
+  <dialog id="confirmDialog" class="dlg">
+    <form method="dialog" class="dlgForm">
+      <div class="dlgTitle">Confirmar</div>
+      <div id="confirmText" class="dlgHint"></div>
+
+      <div class="dlgActions">
+        <button value="cancel" class="btn ghost">Cancelar</button>
+        <button id="confirmOk" value="ok" class="btn danger">Aceptar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="./app.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js");
+      });
+    }
+  </script>
+</body>
+</html>
